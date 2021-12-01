@@ -10,8 +10,12 @@ function App() {
   return (
     <RecoilRoot>
       <div className="App">
-        <Header />
-        <Body />
+        <div className="app-header">
+          <Header />
+        </div>
+        <div className="app-body">
+          <Body />
+        </div>
       </div>
     </RecoilRoot>
   );
