@@ -1,9 +1,9 @@
 const url = "https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json";
 
-function FetchData(){
-    var result;
-    fetch(url).then(response => {result = response.json()});
-    return result;
+const FetchData = async() => {
+    const resp = await fetch(url);
+    const resultJson = await resp.json(); 
+    return resultJson;
 }
 
 export default FetchData;

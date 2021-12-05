@@ -7,11 +7,16 @@ const selectedRowState = atom({
     default: null,
 });
 
+const loadingDataState = atom({
+    key:'loadingDataState',
+    default: false,
+});
+
 const svcDataGridState = atom({
     key: 'svcDataGridState',
-    default: [],
+    default: null,
 });
 
 export {
-    selectedRowState, svcDataGridState
+    selectedRowState, svcDataGridState, loadingDataState
 };
