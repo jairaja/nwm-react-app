@@ -4,6 +4,8 @@ import { log } from "../../common/logging/log";
 import { selectedRowState } from "../../state/app-state";
 import './header-table.css';
 
+// function herel
+
 function HeaderTable(){
 
     const selectedRowData = useRecoilValue(selectedRowState);

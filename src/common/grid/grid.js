@@ -3,7 +3,6 @@ import './grid.css';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
-import { log } from '../logging/log';
 
 class Grid extends Component {
   constructor(props) {
@@ -13,21 +12,14 @@ class Grid extends Component {
         {
           headerName: 'Name',
           field: 'name',
-          sortable: true,
-          filter: true,
-          checkboxSelection: true
         },
         {
           headerName: 'Num',
           field: 'num',
-          sortable: true,
-          filter: true
         },
         {
           headerName: 'Type',
           field: 'type',
-          sortable: true,
-          filter: true
         },
         {
           headerName: 'Image',
@@ -37,23 +29,34 @@ class Grid extends Component {
           cellRenderer:({ value }) => `<img style="height: 14px; width: 14px" src=${value} />`
         }
       ],
-      rowData: []
+      rowData: props.gridData
     };
   }
 
-  componentDidMount() {
-    fetch('https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json')
-        .then(result => result.json())
-        .then(rowData => this.setState({ rowData: rowData.pokemon },
-          () => {
-            log(rowData.pokemon);
-            this.props.setGridData(rowData.pokemon);
-          }));
-  }
+  defaultColDef =  {
+    flex: 1,
+    minWidth: 80,
+    sortable: true,
+    filter: true,
+  };
 
   onGridReady = params => {
     this.gridApi = params.api;
     this.columnApi = params.columnApi;
+  };
+
+  handlerOnRowSelected = (event) => {
+    if (!event.node.selected){
+        return;
+    }  
+
+    this.props.setSelectedRow(event.data);
+  };
+
+  getRowStyle = params => {
+    if (params.node.rowIndex % 2 !== 0) {
+        return { background: '#E0E0E0' };
+    }
   };
 
   render() {
@@ -61,20 +64,24 @@ class Grid extends Component {
       <div
         className="ag-theme-balham"
         style={{
-          height: '1000px',
+          height: '900px',
           width: '800px'
         }}
       >
         <AgGridReact
+          getRowStyle={this.getRowStyle}
           onGridReady={this.onGridReady}
           rowSelection="single"
+          defaultColDef={this.defaultColDef}
+          sideBar='columns'
           columnDefs={this.state.columnDefs}
+          columnD
           rowData={this.state.rowData}
-          onRowSelected={(e) => this.props.setSelectedRow(e.data)}
+          onRowSelected={this.handlerOnRowSelected}
         ></AgGridReact>
       </div>
     );
-  }
+  };
 }
 
 export default Grid;
